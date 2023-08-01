@@ -4,18 +4,22 @@
 // Step 2: Get the bar_for_fuzz and default_to_baz tests passing!
 // Execute `starklings hint if2` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
-
 fn foo_if_fizz(fizzish: felt252) -> felt252 {
     // Complete this function using if, else if and/or else blocks.
     // If fizzish is,
     // 'fizz', return 'foo'
     // 'fuzz', return 'bar'
     // anything else, return 'baz'
+
+    // Strings are not natively supported yet but there is a short string literal
+    // by converting to `felt252` where max length is 31 characters that may be
+    // provided as the argument to the function
     if fizzish == 'fizz' {
-        'foo'
+        return 'foo';
+    } else if fizzish == 'fuzz' {
+        return 'bar';
     } else {
-        1_u32
+        return 'baz';
     }
 }
 

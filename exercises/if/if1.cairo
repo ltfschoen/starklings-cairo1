@@ -1,13 +1,16 @@
 // if1.cairo
 // Execute `starklings hint if1` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
-
 fn bigger(a: usize, b: usize) -> usize {
     // Complete this function to return the bigger number!
     // Do not use:
     // - another function call
     // - additional variables
+    if a > b {
+        return a;
+    }
+    return b;
+    // FIXME - how to handle case where a equals b?
 }
 
 // Don't mind this for now :)
