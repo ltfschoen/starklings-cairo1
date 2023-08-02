@@ -11,6 +11,18 @@ fn bigger(a: usize, b: usize) -> usize {
     }
     return b;
     // FIXME - how to handle case where a equals b?
+
+    // match a.cmp(&b) {
+    //     std::cmp::Ordering::Greater => a,
+    //     std::cmp::Ordering::Less => b,
+    //     std::cmp::Ordering::Equal => a,
+    // }
+
+    // match a {
+    //     _ if a > b => a,
+    //     _ if b > a => b,
+    //     _ => panic!()
+    // }
 }
 
 // Don't mind this for now :)

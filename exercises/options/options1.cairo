@@ -12,6 +12,37 @@ fn maybe_icecream(time_of_day: usize) -> Option<usize> {
     // We use the 24-hour system here, so 10PM is a value of 22 and 12AM is a value of 0
     // The Option output should gracefully handle cases where time_of_day > 23.
     // TODO: Complete the function body - remember to return an Option!
+    // https://book.cairo-lang.org/ch05-02-the-match-control-flow-construct.html#matching-with-options
+
+
+
+    // // attempt1
+    // // note: this works if i don't run the `maybe_icecream(25).is_none()` test
+    //
+    // if time_of_day < 22 {
+    //     return Option::Some(5_usize);
+    // } else if time_of_day >= 22 {
+    //     return Option::Some(0_usize);
+    // } else if time_of_day > 24 {
+    //     return Option::None(());
+    // }
+    // return Option::None(());
+
+    // // attempt2
+    // // note: this gives weird errors, and even more weird errors when i add brackets
+    // match time_of_day {
+    //     t if time_of_day < 22 => return Option::Some(5_usize),
+    //     t if time_of_day >= 22 => return Option::Some(0_usize),
+    //     t if time_of_day > 24 => return Option::None(()),
+    //     _ => return Option::None(()),
+    // }
+    // return Option::None(());
+
+    // attempt3
+    match x {
+        something_else if x > 0 => Option::Some(0_usize),
+        _ => Option::None(()),
+    }
 }
 
 
@@ -27,6 +58,6 @@ fn check_icecream() {
 #[test]
 fn raw_value() {
     // TODO: Fix this test. How do you get at the value contained in the Option?
-    let icecreams = maybe_icecream(12);
+    let icecreams = maybe_icecream(12).unwrap();
     assert(icecreams == 5, 'err_6');
 }
