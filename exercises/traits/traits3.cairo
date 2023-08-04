@@ -28,10 +28,12 @@ trait AnimalTrait<T> {
 
 trait FishTrait {
     fn swim(ref self: Fish) -> ();
+    fn update_distance(ref self: Fish, new_distance: u32);
 }
 
 trait DogTrait {
     fn walk(ref self: Dog) -> ();
+    fn update_distance(ref self: Dog, new_distance: u32);
 }
 
 impl AnimalFishImpl of AnimalTrait::<Fish> {
@@ -73,10 +75,17 @@ impl AnimalDogImpl of AnimalTrait::<Dog> {
 // TODO: implement FishTrait for the type Fish
 impl FishImpl of FishTrait {
     fn swim(ref self: Fish) -> () {
-        // self.update_distance(1);
+        self.update_distance(1);
+        // self = Fish {
+        //     distance: 1,
+        //     ..self,
+        // }
+    }
+    fn update_distance(ref self: Fish, new_distance: u32) {
         self = Fish {
             noise: self.noise,
-            distance: 1,
+            distance: new_distance,
+            // ..self,
         }
     }
 }
@@ -84,10 +93,16 @@ impl FishImpl of FishTrait {
 // TODO: implement DogTrait for the type Dog
 impl DogImpl of DogTrait {
     fn walk(ref self: Dog) -> () {
-        // self.update_distance(1);
+        self.update_distance(1);
+        // self = Dog {
+        //     noise: self.noise,
+        //     distance: 1,
+        // }
+    }
+    fn update_distance(ref self: Dog, new_distance: u32) {
         self = Dog {
             noise: self.noise,
-            distance: 1,
+            distance: new_distance,
         }
     }
 }
