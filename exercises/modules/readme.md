@@ -68,7 +68,7 @@ fn main() {
 	serve_order(); // Via shortcut
 }
 
-mod cutomer_checkout {
+mod customer_checkout {
 	fn start() {
 		super::checkout::collect_payment();
 	}
