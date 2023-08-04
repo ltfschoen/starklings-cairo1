@@ -1,8 +1,7 @@
 // structs2.cairo
 // Address all the TODOs to make the tests pass!
 // Execute `starklings hint structs2` or use the `hint` watch subcommand for a hint.
-
-// I AM NOT DONE
+// https://book.cairo-lang.org/ch02-02-data-types.html?highlight=destructure#the-tuple-type
 
 #[derive(Copy, Drop)]
 struct Order {
@@ -31,6 +30,15 @@ fn test_your_order() {
     let order_template = create_order_template();
     // TODO: Destructure your order into multiple variables to make the assertions pass!
     // let ...
+    let (name, year, made_by_phone, made_by_mobile, made_by_email, item_number, count) = (
+        order_template.name,
+        order_template.year,
+        order_template.made_by_phone,
+        order_template.made_by_mobile,
+        order_template.made_by_email,
+        order_template.item_number,
+        order_template.count,
+    );
 
     assert(name == 'Bob', 'Wrong name');
     assert(year == order_template.year, 'Wrong year');

@@ -7,8 +7,6 @@
 
 // Execute `starklings hint traits3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
-
 #[derive(Copy, Drop)]
 struct Fish {
     noise: felt252,
@@ -24,6 +22,7 @@ struct Dog {
 trait AnimalTrait<T> {
     fn new() -> T;
     fn make_noise(self: T) -> felt252;
+    // fn update_distance(self: T, new_distance: u32);
     fn get_distance(self: T) -> u32;
 }
 
@@ -42,6 +41,12 @@ impl AnimalFishImpl of AnimalTrait::<Fish> {
     fn make_noise(self: Fish) -> felt252 {
         self.noise
     }
+    // fn update_distance(mut self: Fish, new_distance: u32) {
+    //     self = Fish {
+    //         noise: self.noise,
+    //         distance: new_distance,
+    //     }
+    // }
     fn get_distance(self: Fish) -> u32 {
         self.distance
     }
@@ -54,14 +59,38 @@ impl AnimalDogImpl of AnimalTrait::<Dog> {
     fn make_noise(self: Dog) -> felt252 {
         self.noise
     }
+    // fn update_distance(mut self: Dog, new_distance: u32) {
+    //     self = Dog {
+    //         noise: self.noise,
+    //         distance: new_distance,
+    //     }
+    // }
     fn get_distance(self: Dog) -> u32 {
         self.distance
     }
 }
 
 // TODO: implement FishTrait for the type Fish
+impl FishImpl of FishTrait {
+    fn swim(ref self: Fish) -> () {
+        // self.update_distance(1);
+        self = Fish {
+            noise: self.noise,
+            distance: 1,
+        }
+    }
+}
 
 // TODO: implement DogTrait for the type Dog
+impl DogImpl of DogTrait {
+    fn walk(ref self: Dog) -> () {
+        // self.update_distance(1);
+        self = Dog {
+            noise: self.noise,
+            distance: 1,
+        }
+    }
+}
 
 #[test]
 fn test_traits3() {
@@ -69,7 +98,7 @@ fn test_traits3() {
     let mut salmon: Fish = AnimalTrait::new();
     salmon.swim();
     assert(salmon.make_noise() == 'blub', 'Wrong noise');
-    assert(salmon.get_distance() == 1, 'Wrong distance');
+    assert(salmon.get_distance() == 1, 'Wrong distance1');
 
     let mut dog: Dog = AnimalTrait::new();
     dog.walk();

@@ -3,7 +3,9 @@
 
 // I AM NOT DONE
 
+// https://github.com/starkware-libs/cairo/discussions/1714#discussioncomment-4763880
 use option::OptionTrait;
+use option::OptionTraitImpl;
 
 // This function returns how much icecream there is left in the fridge.
 // If it's before 10PM, there's 5 pieces left. At 10PM, someone eats them
@@ -14,35 +16,32 @@ fn maybe_icecream(time_of_day: usize) -> Option<usize> {
     // TODO: Complete the function body - remember to return an Option!
     // https://book.cairo-lang.org/ch05-02-the-match-control-flow-construct.html#matching-with-options
 
+    // FIXME - can't get any of this to work
 
-
-    // // attempt1
-    // // note: this works if i don't run the `maybe_icecream(25).is_none()` test
-    //
-    // if time_of_day < 22 {
-    //     return Option::Some(5_usize);
-    // } else if time_of_day >= 22 {
-    //     return Option::Some(0_usize);
-    // } else if time_of_day > 24 {
-    //     return Option::None(());
-    // }
-    // return Option::None(());
+    // attempt1
+    // note: this works if i don't run the `maybe_icecream(25).is_none()` test
+    if time_of_day < 22 {
+        return Option::Some(5_usize);
+    } else if time_of_day >= 22 && time_of_day <= 24 {
+        return Option::Some(0_usize);
+    }
+    return Option::None(());
 
     // // attempt2
     // // note: this gives weird errors, and even more weird errors when i add brackets
     // match time_of_day {
     //     t if time_of_day < 22 => return Option::Some(5_usize),
-    //     t if time_of_day >= 22 => return Option::Some(0_usize),
+    //     t if time_of_day >= 22 && time_of_day <= 24 => return Option::Some(0_usize),
     //     t if time_of_day > 24 => return Option::None(()),
     //     _ => return Option::None(()),
     // }
     // return Option::None(());
 
-    // attempt3
-    match x {
-        something_else if x > 0 => Option::Some(0_usize),
-        _ => Option::None(()),
-    }
+    // attempt3 - simple but not answer
+    // match time_of_day {
+    //     something_else if time_of_day > 0 => Option::Some(0_usize),
+    //     _ => Option::None(()),
+    // }
 }
 
 

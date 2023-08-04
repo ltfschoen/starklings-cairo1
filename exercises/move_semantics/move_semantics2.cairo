@@ -3,25 +3,25 @@
 // Execute `starklings hint move_semantics2` or use the `hint` watch subcommand for a hint.
 
 use array::ArrayTrait;
+use array::ArrayTCloneImpl;
 use debug::PrintTrait;
-
-// I AM NOT DONE
+use clone::Clone;
 
 fn main() {
-    let arr0 = ArrayTrait::new();
+    // error: Variable was previously moved. Trait has no implementation in context: core::traits::Copy::<core::array::Array::<core::felt252>>
+    let mut arr0 = ArrayTrait::new();
 
-    let mut arr1 = fill_arr(arr0);
+    // Do not move this line
+    fill_arr(ref arr0);
 
     // Do not change the following line!
     arr0.print();
 }
 
-fn fill_arr(arr: Array<felt252>) -> Array<felt252> {
-    let mut arr = arr;
+fn fill_arr(ref arr: Array<felt252>) {
+    let mut arr = arr.clone();
 
     arr.append(22);
     arr.append(44);
     arr.append(66);
-
-    arr
 }
