@@ -1,8 +1,8 @@
 // starknet5.cairo
 // Address all the TODOs to make the tests pass!
 // Execute `starklings hint starknet5` or use the `hint` watch subcommand for a hint.
+// https://book.cairo-lang.org/ch99-02-00-abis-and-cross-contract-interactions.html
 
-// I AM NOT DONE
 use core::traits::Into;
 use core::result::ResultTrait;
 use starknet::syscalls::deploy_syscall;
@@ -11,12 +11,39 @@ use traits::TryInto;
 use option::OptionTrait;
 use starknet::class_hash::Felt252TryIntoClassHash;
 
+// Call ContractB from inside ContractA using the following Dispatcher object 
+// that is automatically generated upon compilation, but just shown below for reference.
+// It is of the type of the called contract ContractB, where the Dispatcher
+// has associated methods available under the `DispatcherTrait`, that
+// correspond to the external functions of the ContractB contract that you want to call.
+// See https://book.cairo-lang.org/ch99-02-02-contract-dispatcher-library-dispatcher-and-system-calls.html#contract-dispatcher
+// trait IContractBDispatcherTrait<T> {
+//     // https://book.cairo-lang.org/ch99-02-02-contract-dispatcher-library-dispatcher-and-system-calls.html#using-low-level-syscalls
+//     fn is_enabled(self: T) -> bool;
+//     // ...
+// }
+
+// #[derive(Copy, Drop, storage_access::StorageAccess, Serde)]
+// struct IContractBDispatcher {
+//     contract_address: starknet::ContractAddress,
+// }
+
+// impl IContractBDispatcherImpl of IContractBDispatcherTrait<IContractBDispatcher> {
+//     fn is_enabled(
+//         self: IContractBDispatcher
+//     ) -> bool { // starknet::call_contract_syscall is called in here
+//         // `call_contract_syscall` https://github.com/starkware-libs/cairo/blob/main/corelib/src/starknet/syscalls.cairo#L10
+//     }
+//     // ...
+// }
+
+// Note: in older cairo versions it would be annotated with 
+// `#[starknet::interface]` instead of `#[abi]`
 #[abi]
 trait IContractA {
     fn set_value(_value: u128) -> bool;
     fn get_value() -> u128;
 }
-
 
 #[contract]
 mod ContractA {
@@ -26,6 +53,7 @@ mod ContractA {
     use super::IContractBDispatcher;
     use super::IContractBDispatcherTrait;
     use result::ResultTrait;
+    use debug::PrintTrait;
 
     struct Storage {
         contract_b: ContractAddress,
@@ -41,6 +69,16 @@ mod ContractA {
     fn set_value(
         _value: u128
     ) -> bool { //TODO: check if contract_b is enabled. If it is, set the value and return true. Otherwise, return false.
+        let address_b: ContractAddress = contract_b::read();
+        let is_enabled = IContractBDispatcher { contract_address: address_b }.is_enabled();
+        'ContractB is_enabled: '.print();
+        (is_enabled).print();
+        if is_enabled == true {
+            value::write(_value);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     #[view]
@@ -91,6 +129,7 @@ mod test {
     use array::ArrayTrait;
     use result::ResultTrait;
     use starknet::ContractAddress;
+    use debug::PrintTrait;
 
     use super::ContractA;
     use super::IContractADispatcher;
@@ -98,7 +137,6 @@ mod test {
     use super::ContractB;
     use super::IContractBDispatcher;
     use super::IContractBDispatcherTrait;
-
 
     #[test]
     #[available_gas(30000000)]
@@ -120,6 +158,12 @@ mod test {
         let contract_b = IContractBDispatcher { contract_address: address_b };
 
         //TODO interact with contract_b to make the test pass.
+
+        // call the enable() function of ContractA to be able to store a value in the `value`
+        // key of storage with `set_value` function, otherwise there will not be a value there to
+        // be retrieved by calling `get_value` function and below assertion will fail
+        contract_b.enable();
+        
 
         assert(contract_a.set_value(300) == true, 'Could not set value');
         assert(contract_a.get_value() == 300, 'Value was not set');

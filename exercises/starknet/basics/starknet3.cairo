@@ -4,8 +4,7 @@
 // complete successfully. Jill says they can use the owner code and allow
 // only the owner to update the contract, they agree.
 // Can you help them write this contract?
-
-// I AM NOT DONE
+// https://book.starknet.io/chapter_2/storage.html
 
 #[contract]
 mod ProgressTracker {
@@ -15,7 +14,7 @@ mod ProgressTracker {
     struct Storage {
         contract_owner: ContractAddress,
         // TODO: Set types for LegacyMap
-        progress: LegacyMap<>
+        progress: LegacyMap<ContractAddress, u16>
     }
 
     #[constructor]
@@ -26,10 +25,13 @@ mod ProgressTracker {
     #[external]
     fn set_progress(user: ContractAddress, new_progress: u16) {// TODO: assert owner is calling
     // TODO: set new_progress for user,
+        assert(contract_owner::read() == get_caller_address(), 'only owner may set progress');
+        progress::write(user, new_progress);
     }
 
     #[view]
     fn get_progress(user: ContractAddress) -> u16 {// Get user progress
+        progress::read((user))
     }
 }
 

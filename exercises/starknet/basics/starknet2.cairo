@@ -5,8 +5,6 @@
 // Help Jill rewrite the contract with a Storage and a constructor.
 // There is a `ContractAddress` type which should be used for Wallet addresses.
 
-// I AM NOT DONE
-
 use starknet::ContractAddress;
 
 #[contract]
@@ -16,19 +14,19 @@ mod JillsContract {
 
     struct Storage {
         // TODO: Add `contract_owner` storage, with ContractAddress type
-
+        owner: ContractAddress,
     }
 
     #[constructor]
     fn constructor(owner: ContractAddress) {
         // TODO: Write `owner` to contract_owner storage
-
+        owner::write(owner);
     }
 
     #[view]
     fn get_owner() -> ContractAddress {
         // TODO: Read contract_owner storage
-
+        owner::read()
     }
 }
 
