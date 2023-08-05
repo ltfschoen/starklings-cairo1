@@ -3,14 +3,26 @@
 // The contract shows that he is the owner of the contract.
 // However, his contract is not working. What's he missing?
 
-// I AM NOT DONE
-
 #[contract]
 mod JoesContract {
+    // imports from core library
 
+    // storage
+
+    // constructor
+
+    // getter
+
+    // @dev Return the owner of the contract
+    // @return owner felt252: owner address of the contract
+    #[view]
     fn get_owner() -> felt252 {
         'Joe'
     }
+
+    // external functions
+
+    // internal functions
 
 }
 
