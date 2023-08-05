@@ -17,9 +17,14 @@ use starknet::class_hash::Felt252TryIntoClassHash;
 // has associated methods available under the `DispatcherTrait`, that
 // correspond to the external functions of the ContractB contract that you want to call.
 // See https://book.cairo-lang.org/ch99-02-02-contract-dispatcher-library-dispatcher-and-system-calls.html#contract-dispatcher
-// trait IContractBDispatcherTrait<T> {
+// trait IContractBDispatcherTrait<TContractState> {
 //     // https://book.cairo-lang.org/ch99-02-02-contract-dispatcher-library-dispatcher-and-system-calls.html#using-low-level-syscalls
-//     fn is_enabled(self: T) -> bool;
+//     fn is_enabled(
+//         ref self: TContractState,
+//         address: starknet::ContractAddress,
+//         selector: felt252,
+//         calldata: Array<felt252>,
+//     ) -> bool;
 //     // ...
 // }
 
@@ -30,9 +35,15 @@ use starknet::class_hash::Felt252TryIntoClassHash;
 
 // impl IContractBDispatcherImpl of IContractBDispatcherTrait<IContractBDispatcher> {
 //     fn is_enabled(
-//         self: IContractBDispatcher
+//         ref self: IContractBDispatcher,
+//         address: starknet::ContractAddress,
+//         selector: felt252,
+//         calldata: Array<felt252>,
 //     ) -> bool { // starknet::call_contract_syscall is called in here
 //         // `call_contract_syscall` https://github.com/starkware-libs/cairo/blob/main/corelib/src/starknet/syscalls.cairo#L10
+//         let mut res = starknet::call_contract_syscall(address, selector, calldata.span())
+//             .unwrap_syscall();
+//         Serde::<bool>::deserialize(ref res).unwrap()
 //     }
 //     // ...
 // }
