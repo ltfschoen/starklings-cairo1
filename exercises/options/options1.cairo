@@ -1,8 +1,6 @@
 // options1.cairo
 // Execute `starklings hint options1` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
-
 // https://github.com/starkware-libs/cairo/discussions/1714#discussioncomment-4763880
 use option::OptionTrait;
 use option::OptionTraitImpl;
@@ -16,26 +14,26 @@ fn maybe_icecream(time_of_day: usize) -> Option<usize> {
     // TODO: Complete the function body - remember to return an Option!
     // https://book.cairo-lang.org/ch05-02-the-match-control-flow-construct.html#matching-with-options
 
-    // FIXME - can't get any of this to work
-
     // attempt1
     // note: this works if i don't run the `maybe_icecream(25).is_none()` test
     if time_of_day < 22 {
-        return Option::Some(5_usize);
-    } else if time_of_day >= 22 && time_of_day <= 24 {
-        return Option::Some(0_usize);
+        return Option::Some(5);
+    } else if time_of_day <= 24 {
+        return Option::Some(0);
+    } else {
+        return Option::None(());
     }
-    return Option::None(());
+
+    // FIXME - can't get below to work
 
     // // attempt2
     // // note: this gives weird errors, and even more weird errors when i add brackets
     // match time_of_day {
-    //     t if time_of_day < 22 => return Option::Some(5_usize),
-    //     t if time_of_day >= 22 && time_of_day <= 24 => return Option::Some(0_usize),
+    //     t if time_of_day < 22 => return Option::Some(5),
+    //     t if time_of_day <= 24 => return Option::Some(0),
     //     t if time_of_day > 24 => return Option::None(()),
     //     _ => return Option::None(()),
     // }
-    // return Option::None(());
 
     // attempt3 - simple but not answer
     // match time_of_day {
